@@ -6,26 +6,22 @@ networks:
 
 services:
     server:
-        image: node:10-alpine
+        build: ./server
         volumes:
-        - ./server:/server
-        working_dir: /server
+            - ./server:/user/wwww
+            - /user/wwww/node_modules
         ports:
-        - "3000:3000"
+            - "3000:3000"
         restart: unless-stopped
         networks:
             - node-network
-        command: >
-            sh -c "npm i && npm run dev"
     client:
-        image: node:10-alpine
+        build: ./client
         volumes:
-        - ./client:/client
-        working_dir: /client
+            - ./client::/user/wwww
+            - /user/wwww/node_modules
         ports:
         - "8080:8080"
         restart: unless-stopped
         networks:
             - node-network
-        command: >
-            sh -c "npm i && npm run serve"
